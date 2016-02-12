@@ -10,12 +10,20 @@ module.exports = {
         type: String,
         description: 'Binder server host'
       },
-      'port': { 
+      'port': {
         type: Number,
         description: 'Binder server port'
+      }
     },
     response: {
       error: {
+        unauthorized: {
+          status: 403,
+          msg: 'Unauthorized request',
+          suggestions: [
+            'make sure to include a valid API token with any privileged requests'
+          ]
+        },
         malformedRequest: {
           status: 422,
           msg: 'Request does not contain the required parameters for this endpoint: {name}',
@@ -41,9 +49,9 @@ module.exports = {
           suggestions: [
             'ensure that the above server is running and is accessible from this machine'
           ]
-        }
+        },
         generic: {
-          msg: 'An unidentifiable error occured',
+          msg: 'An unidentifiable error occured: {error}',
           suggestions: [
             'check stderr and the logs on the server for clues'
           ]
@@ -56,7 +64,7 @@ module.exports = {
 
     start: {
       description: 'Start building a Binder image from dependences in a repository',
-      path: 'builds/',
+      path: '/builds/',
       params: {
         repository: {
           type: String,
@@ -91,13 +99,13 @@ module.exports = {
         },
         success: {
           status: 200,
-          msg: 'Build succesfully started for repository: {repository}'
+          msg: 'Build succesfully started for repository: {repository}\n {results}'
         }
       }
     },
 
     statusOne: {
-      path: 'builds/{image-name}',
+      path: '/builds/{image-name}',
       description: 'Get the status of a Binder build',
       params: {
         'image-name': {
@@ -136,13 +144,13 @@ module.exports = {
         },
         success: {
           status: 200,
-          msg: 'Fetched build information for image: {image-name}'
+          msg: '{results}'
         }
       }
     },
 
     statusAll: {
-      path: 'builds/',
+      path: '/builds/',
       description: 'Get the status of all Binder builds',
       msg: 'Getting status of all builds',
       request: {
@@ -175,19 +183,84 @@ module.exports = {
         },
         success: {
           status: 200,
-          msg: 'Fetched all build information'
+          msg: '{results}'
         }
       }
     }
   },
 
   registry: {
-    publish: {
 
+    register: {
+      path: '/templates/',
+      description: 'Register a new template file',
+      params: {
+        'template': {
+          type: JSON,
+          description: 'the template file to register'
+        }
+      },
+      msg: 'Registering new template file with the registry',
+      request: {
+        method: 'POST',
+        authorized: true,
+        body: ['template']
+      },
+      response: {
+        body: {
+          'name': String,
+          'time-created': Date,
+          'time-modified': Date
+        },
+        error: {
+          badDatabase: {
+            status: 500,
+            msg: 'Could not store the template in the Binder database',
+            suggestions: [
+              'ensure that the database is running and is accessible to the registry server',
+              'check the Binder Logstash logs for database errors'
+            ]
+          }
+        },
+        success: {
+          status: 200,
+          msg: '{results}'
+        }
+      }
     },
-    fetch: {
 
+    fetch: {
+      path: '/templates/{template-name}',
+      description: 'Fetch a template from the registry',
+      params: {
+        'template-name': {
+          type: String,
+          description: 'name of the template'
+        }
+      },
+      msg: 'Fetching template from the registry',
+      request: {
+        method: 'GET',
+        authorized: true
+      },
+      response: {
+        error: {
+          badDatabase: {
+            status: 500,
+            msg: 'Could not fetch template from the Binder database',
+            suggestions: [
+              'ensure that the database is running and is accessible to the registry server',
+              'check the Binder Logstash logs for database errors'
+            ]
+          }
+        },
+        success: {
+          status: 200,
+          msg: '{results}'
+        }
+      }
     }
+
   },
 
   deploy: {
