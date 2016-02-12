@@ -264,11 +264,124 @@ module.exports = {
   },
 
   deploy: {
+
     deploy: {
+      path: '/applications/{template-name}',
+      description: 'Deploy an instance of a template onto a Binder backend',
+      params: {
+        'template-name': {
+          type: String,
+          description: 'name of the template to deploy'
+        }
+      },
+      msg: 'Deploying {template-name} onto a Binder backend',
+      request: {
+        method: 'POST',
+        authorized: false
+      },
+      response: {
+        error: {
+          registryError: {
+            status: 500,
+            msg: 'Could not fetch template with name {template-name} from registry',
+            suggestions: [
+              'make sure the deployment server is not in testing mode (will fetch templates locally)',
+              'check if the registry has access to the Binder database'
+            ]
+          },
+          badDatabase: {
+            status: 500,
+            msg: 'Could not write deployment metadata to the Binder database',
+            suggestions: [
+              'ensure that the database is accessible to the deploy server',
+              'check the Binder Logstash logs for database-oriented messages'
+            ]
+          }
+        },
+        success: {
+          status: 200,
+          msg: '{results}'
+        }
+      }
+    },
+
+    statusOne: {
+      path: '/applications/{template-name}/{id}',
+      description: 'Get information associated with a single deployment',
+      params: {
+        'template-name': {
+          type: String,
+          description: 'the deployment\'s template name'
+        },
+        'id': {
+          type: String,
+          description: 'the deployment\'s ID'
+        }
+      },
+      msg: 'Getting information about the single deployment {template-name} - {id}',
+      request: {
+        method: 'GET',
+        authorized: false
+      },
+      response: {
+        error: {
+          badDatabase: {
+            status: 500,
+            msg: 'Querying the database for the deployment record failed',
+            suggestions: [
+              'ensure that the database is accessible to the deploy server',
+              'check the Binder Logstash logs for database-oriented messages'
+            ]
+          },
+          noRecord: {
+            status: 500,
+            msg: 'There is no record for that template/ID combination',
+            suggestions: [
+              'make sure that the template/ID are spelled correctly',
+              'check if the ID was returned in a previous deployment call'
+            ]
+          }
+        },
+        success: {
+          status: 200,
+          msg: '{results}'
+        }
+      }
 
     },
-    status: {
 
+    statusAll: {
+      path: '/applications/{template-name}',
+      params: {
+        'template-name': {
+          type: String,
+          description: 'name of the template with existing deployments',
+          required: false
+        }
+      },
+      description: 'Get information associated with all deployment for a given template',
+      msg: 'Getting information about all deployments for {template-name}',
+      request: {
+        method: 'GET',
+        authorized: true
+      },
+      response: {
+        error: {
+          badDatabase: {
+            status: 500,
+            msg: 'Querying the database for all deployments failed',
+            suggestions: [
+              'ensure that the database is accessible to the deploy server',
+              'check the Binder Logstash logs for database-oriented messages'
+            ]
+          }
+        },
+        success: {
+          status: 200,
+          msg: '{results}'
+        }
+      }
     }
+
   }
 }
