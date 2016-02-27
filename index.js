@@ -280,6 +280,9 @@ module.exports = {
         authorized: false
       },
       response: {
+        body: {
+          id: String
+        },
         error: {
           registryError: {
             status: 500,
@@ -324,6 +327,10 @@ module.exports = {
         authorized: false
       },
       response: {
+        body: {
+          id: String,
+          location: String
+        },
         error: {
           badDatabase: {
             status: 500,
@@ -366,6 +373,10 @@ module.exports = {
         authorized: true
       },
       response: {
+        body: [{
+          id: String,
+          location: String
+        }],
         error: {
           badDatabase: {
             status: 500,
