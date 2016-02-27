@@ -381,7 +381,53 @@ module.exports = {
           msg: '{results}'
         }
       }
-    }
+    },
 
+    _preload: {
+      path: '/preload/{template-name}',
+      params: {
+        'template-name': {
+          type: String,
+          description: 'name of the template to preload onto the cluster',
+          required: true
+        }
+      },
+      description: 'Preload a template onto all nodes of the cluster',
+      msg: 'Preloading {template-name} onto all nodes of the cluster',
+      request: {
+        method: 'POST',
+        authorized: true
+      },
+      response: {
+        error: {
+          badDatabase: {
+            status: 500,
+            msg: 'Saving the preloader apps to the database failed',
+            suggestions: [
+              'ensure that the database is accessible to the deploy server',
+              'check the Binder Logstash logs for database-oriented messages'
+            ]
+          },
+          badKubeRequest: {
+            status: 500,
+            msg: 'Getting the node list from Kubernetes failed',
+            suggestions: [
+              'ensure that the deployment server can communicate with the Kubernetes cluster'
+            ]
+          },
+          unknownFailure: {
+            status: 500,
+            msg: 'Preloading failed for unknown reasons',
+            suggestions: [
+              'check the Binder Logstash logs for Kubernetes errors'
+            ]
+          }
+        },
+        success: {
+          status: 200,
+          msg: '{results}'
+        }
+      }
+    }
   }
 }
