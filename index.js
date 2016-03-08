@@ -31,6 +31,13 @@ module.exports = {
             'add the required parameter to the request'
           ]
         },
+        doesNotExist: {
+          status: 404,
+          msg: 'The requested resource does not exist',
+          suggestions: [
+            'is the resource name spelled correctly?'
+          ]
+        },
         badResponse: {
           status: 500,
           msg: 'Server response is missing a required field: {name}',
