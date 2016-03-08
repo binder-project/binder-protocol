@@ -104,7 +104,7 @@ module.exports = {
       }
     },
 
-    statusOne: {
+    status: {
       path: '/builds/{image-name}',
       description: 'Get the status of a Binder build',
       params: {
@@ -259,6 +259,32 @@ module.exports = {
           msg: '{results}'
         }
       }
+    },
+
+    fetchAll: {
+      path: '/templates/',
+      description: 'Fetch all templates from the registry',
+      msg: 'Fetching all templates from the registry',
+      request: {
+        method: 'GET',
+        authorized: true
+      },
+      response: {
+        error: {
+          badDatabase: {
+            status: 500,
+            msg: 'Could not fetch template from the Binder database',
+            suggestions: [
+              'ensure that the database is running and is accessible to the registry server',
+              'check the Binder Logstash logs for database errors'
+            ]
+          }
+        },
+        success: {
+          status: 200,
+          msg: '{results}'
+        }
+      }
     }
 
   },
@@ -305,7 +331,7 @@ module.exports = {
       }
     },
 
-    statusOne: {
+    status: {
       path: '/applications/{template-name}/{id}',
       description: 'Get information associated with a single deployment',
       params: {
