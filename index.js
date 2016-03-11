@@ -31,13 +31,6 @@ module.exports = {
             'add the required parameter to the request'
           ]
         },
-        doesNotExist: {
-          status: 404,
-          msg: 'The requested resource does not exist',
-          suggestions: [
-            'is the resource name spelled correctly?'
-          ]
-        },
         badResponse: {
           status: 500,
           msg: 'Server response is missing a required field: {name}',
@@ -198,44 +191,6 @@ module.exports = {
 
   registry: {
 
-    register: {
-      path: '/templates/',
-      description: 'Register a new template file',
-      params: {
-        'template': {
-          type: JSON,
-          description: 'the template file to register'
-        }
-      },
-      msg: 'Registering new template file with the registry',
-      request: {
-        method: 'POST',
-        authorized: true,
-        body: ['template']
-      },
-      response: {
-        body: {
-          'name': String,
-          'time-created': Date,
-          'time-modified': Date
-        },
-        error: {
-          badDatabase: {
-            status: 500,
-            msg: 'Could not store the template in the Binder database',
-            suggestions: [
-              'ensure that the database is running and is accessible to the registry server',
-              'check the Binder Logstash logs for database errors'
-            ]
-          }
-        },
-        success: {
-          status: 200,
-          msg: '{results}'
-        }
-      }
-    },
-
     fetch: {
       path: '/templates/{template-name}',
       description: 'Fetch a template from the registry',
@@ -258,6 +213,14 @@ module.exports = {
             suggestions: [
               'ensure that the database is running and is accessible to the registry server',
               'check the Binder Logstash logs for database errors'
+            ]
+
+          },
+          doesNotExist: {
+            status: 404,
+            msg: 'The requested resource does not exist',
+            suggestions: [
+              'is the resource name spelled correctly?'
             ]
           }
         },
