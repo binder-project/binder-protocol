@@ -79,7 +79,7 @@ module.exports = {
       },
       response: {
         body: {
-          'image-name': String
+          'name': String
         },
         error: {
           noDatabase: {
@@ -120,7 +120,7 @@ module.exports = {
       },
       response: {
         body: {
-          'image-name': String,
+          'name': String,
           'start-time': Date,
           'status': String,
           'phase': String,
@@ -159,7 +159,7 @@ module.exports = {
       },
       response: {
         body: [ {
-          'image-name': String,
+          'name': String,
           'start-time': Date,
           'status': String,
           'phase': String,
