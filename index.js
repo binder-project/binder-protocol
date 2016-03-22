@@ -409,7 +409,7 @@ module.exports = {
         error: {
           badDatabase: {
             status: 500,
-            msg: 'Saving the preloader apps to the database failed',
+            msg: 'Saving the preloading apps to the database failed',
             suggestions: [
               'ensure that the database is accessible to the deploy server',
               'check the Binder Logstash logs for database-oriented messages'
@@ -427,6 +427,38 @@ module.exports = {
             msg: 'Preloading failed for unknown reasons',
             suggestions: [
               'check the Binder Logstash logs for Kubernetes errors'
+            ]
+          }
+        },
+        success: {
+          status: 200,
+          msg: '{results}'
+        }
+      }
+    },
+
+    _preloadStatus: {
+      path: '/preload/{template-name}',
+      params: {
+        'template-name': {
+          type: String,
+          description: 'name of the preloading template',
+          required: true
+        }
+      },
+      description: 'Check the preloading status of a template',
+      msg: 'Checking preloading status of {template-name}',
+      request: {
+        method: 'GET',
+        authorized: true
+      },
+      response: {
+        error: {
+          badDatabase: {
+            status: 500,
+            msg: 'Checking the preloading status failed due to a database error',
+            suggestions: [
+              'ensure that the database is accessible to the deploy server'
             ]
           }
         },
