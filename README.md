@@ -30,7 +30,7 @@ Each endpoint is defined by the following properties:
  2. `params` object - keys for every request parameter and values describing that parameter's properties:
   1. `type` string - request parameter type
   2. `description` string - request parameter description
-  3. `required` boolean - is parameter required? 
+  3. `required` boolean - is this parameter required? 
  3. `description` string - description of the endpoint
  4. `msg` string - message that should be displayed when the endpoint request is sent
  5. `request` object - keys for all properties of the HTTP request
