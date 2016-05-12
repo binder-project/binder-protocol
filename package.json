@@ -1,6 +1,6 @@
 {
   "name": "binder-protocol",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "API description for all Binder servers",
   "main": "index.js",
   "scripts": {
