@@ -10,7 +10,7 @@ npm install binder-protocol
 
 ### usage
 
-The protocol declaration is a single JS object, where each bottom-level key represents a Binder API endpoint and the value is a [schema](###schema) object. The endpoints currently defined are (see the [API description](add link) for more detail): 
+The protocol declaration is a single JS object, where each bottom-level key represents a Binder API endpoint and the value is a [schema](###schema) object. The endpoints currently defined are (see the [API description](https://github.com/binder-project/binder-docs/blob/master/markdown/api-docs.md) for more detail): 
 * build
   * start - start a build
   * status - query the status of a single build
